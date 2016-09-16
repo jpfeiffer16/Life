@@ -17,20 +17,18 @@ const Game = function (configObj) {
     //Any live cell with two or three live neighbours lives on to the next generation.
     (tile, neighbors) => {
         if (!tile.state) return false;
-        if (neighbors.length == 1 || neighbors.length ==2) return true;
+        if (neighbors.length == 1 || neighbors.lenght ==2) return true;
         else return false;
     },
     //Any live cell with more than three live neighbours dies, as if by over-population.
     (tile, neighbors) => {
       if (!tile.state) return false;
-      if (neighbors.length < 4) return true;
+      if (neighbors.length < 3) return true;
       else return false;
     },
     //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
     (tile, neighbors) => {
-      if (tile.state) return ture;
-      if (neighbors.length == 3) return true;
-      else return false;
+
     }
   ];
 
@@ -55,37 +53,25 @@ const Game = function (configObj) {
   }
 
   let step = () => {
-    let tilesToChange = [];
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         let coordsObj = { x, y };
         let tile = getTile(coordsObj);
         let neighbors = getNeighbors(coordsObj);
-        let newValue = 0;
-        liferules.forEach((cb) => {
-           newValue = cb(tile, neighbors); 
-        });
-        if (newValue != tile.state) {
-          tilesToChange.push({ tile, newValue });
-        }
+
       }
     }
-    tilesToChange.forEach((changeObj) => {
-      let {tile, newValue} = changeObj;
-      if (tile == undefined || newValue == undefined) return;
-      tile.state = newValue;
-    });
   }
 
   let getTile = (coordsObj) => {
     let {x,y} = coordsObj;
-    if (x == undefined || y == undefined) return;
+    if (!x || !y) return;
     return tiles[x][y];
   }
 
   let getNeighbors = (configObj) => {
     let {x,y} = configObj;
-    if (x == undefined || y == undefined) return;
+    if (!x || !y) return;
     let tile = getTile(configObj);
     if (!tile) return;
     let listNeighbors = [
