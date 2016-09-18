@@ -6,9 +6,10 @@ let game = Game({
 });
 
 console.log('Done');
-game.toggleTile({
-  x: 99,
-  y: 99
-});  
+// game.toggleTile({
+//   x: 99,
+//   y: 99
+// });  
 // game.changeTile();
 // console.log(JSON.stringify(game.tiles));
+game.step();

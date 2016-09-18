@@ -10,15 +10,15 @@ const Game = function (configObj) {
   let liferules = [
     //Any live cell with fewer than two live neighbours dies, as if caused by under-population.
     (tile, neighbors) => {
-        if (!tile.state) return false
-        if (neighbors.length > 1) return true;
-        else return false;
+      if (!tile.state) return false
+      if (neighbors.length > 1) return true;
+      else return false;
     },
     //Any live cell with two or three live neighbours lives on to the next generation.
     (tile, neighbors) => {
-        if (!tile.state) return false;
-        if (neighbors.length == 1 || neighbors.length ==2) return true;
-        else return false;
+      if (!tile.state) return false;
+      if (neighbors.length == 1 || neighbors.length ==2) return true;
+      else return false;
     },
     //Any live cell with more than three live neighbours dies, as if by over-population.
     (tile, neighbors) => {
@@ -81,6 +81,8 @@ const Game = function (configObj) {
   let getTile = (coordsObj) => {
     let {x,y} = coordsObj;
     if (x == undefined || y == undefined) return;
+    if (x > (height - 1) || x < 0) return  null;
+    if (y > (width - 1) || y < 0) return  null;
     return tiles[x][y];
   }
 
