@@ -61,9 +61,10 @@ const Game = function (configObj) {
         let coordsObj = { x, y };
         let tile = getTile(coordsObj);
         let neighbors = getNeighbors(coordsObj);
-        let newValue = 0;
+        let newValue = null;
         liferules.forEach((cb) => {
-           newValue = cb(tile, neighbors); 
+           newValue = cb(tile, neighbors);
+          if (newValue != tile.state);
         });
         if (newValue != tile.state) {
           tilesToChange.push({ tile, newValue });
