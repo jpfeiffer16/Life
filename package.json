@@ -1,5 +1,6 @@
 {
   "name": "life",
+  "productName": "life",
   "version": "0.1.0",
   "description": "A little game-of-life app in electron",
   "main": "main.js",
@@ -7,5 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Joe Pfeiffer",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "electron-prebuilt": "^1.4.0"
+  }
 }

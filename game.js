@@ -28,11 +28,27 @@ const Game = function (configObj) {
     },
     //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
     (tile, neighbors) => {
-      if (tile.state) return ture;
+      if (tile.state) return true;
       if (neighbors.length == 3) return true;
       else return false;
     }
   ];
+
+  let checkTile = (tile, neighbors) => {
+    //Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+    //Any live cell with two or three live neighbours lives on to the next generation.
+    //Any live cell with more than three live neighbours dies, as if by over-population.
+    //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+    let liveNeighbors = neighbors.filter(i => i.state);
+    if (tile.state) {
+      if (liveNeighbors.length < 2) return false;
+      if (liveNeighbors.length == 2 || liveNeighbors.length == 3) return true;
+      if (liveNeighbors.length > 2) return false;
+    } else {
+      if (liveNeighbors.length == 3) return true;
+      else return false;
+    }
+  };
 
   for (let i = 0; i < width; i++) {
     let subLevel = []
@@ -62,10 +78,11 @@ const Game = function (configObj) {
         let tile = getTile(coordsObj);
         let neighbors = getNeighbors(coordsObj);
         let newValue = null;
-        liferules.forEach((cb) => {
-           newValue = cb(tile, neighbors);
-          if (newValue != tile.state);
-        });
+        //liferules.forEach((cb) => {
+        //   newValue = cb(tile, neighbors);
+        //  if (newValue != tile.state);
+        //});
+        newValue = checkTile(tile, neighbors);
         if (newValue != tile.state) {
           tilesToChange.push({ tile, newValue });
         }
@@ -125,7 +142,9 @@ const Game = function (configObj) {
         y: y - 1
       })
     ];
-    return listNeighbors;
+    return listNeighbors.filter((item) => {
+      return item != null;  
+    });
   }
 
   return {

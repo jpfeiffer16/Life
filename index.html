@@ -3,20 +3,30 @@
   <head>
     <meta charset="UTF-8">
     <title>Game of Life</title>
+    <style>
+      div.row {
+        height: 20px;
+      }
+      div.tile {
+        width: 20px;
+        height: 100%;
+        background-color: gray;
+        display: inline-block;
+        border-style: solid;
+        border-width: 1px;
+        border-color: white;
+        box-sizing: border-box;
+      }
+      div.tile.active {
+        background-color: red;
+      }
+    </style>
+    <script src="bower_components/jquery/dist/jquery.min.js" onload="window.$ = window.jQuery = module.exports;"></script>
   </head>
   <body>
-    <!--<canvas id="game-canvas"></canvas>-->
-    
-    <script>
-      let width = 100;
-      let height = 100;
-      let game = require('./game')({width , height });
-      //Set up grid
-      for (let x = 0; x < width; x++) {
-        for (let y = 0; y < height; y++) {
-          //TODO: Do setup here
-        }
-      }
-    </script>
+    <div id="tile-container"></div>
+    <button id="step">Step</button>
+    <button id="play">Play</button>
+    <script src="gameController.js"></script>
   </body>
 </html>
