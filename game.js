@@ -7,33 +7,58 @@ const Game = function (configObj) {
 
   let tiles = [];
 
-  let liferules = [
-    //Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-    (tile, neighbors) => {
-      if (!tile.state) return false
-      if (neighbors.length > 1) return true;
-      else return false;
-    },
-    //Any live cell with two or three live neighbours lives on to the next generation.
-    (tile, neighbors) => {
-      if (!tile.state) return false;
-      if (neighbors.length == 1 || neighbors.length ==2) return true;
-      else return false;
-    },
-    //Any live cell with more than three live neighbours dies, as if by over-population.
-    (tile, neighbors) => {
-      if (!tile.state) return false;
-      if (neighbors.length < 4) return true;
-      else return false;
-    },
-    //Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-    (tile, neighbors) => {
-      if (tile.state) return true;
-      if (neighbors.length == 3) return true;
-      else return false;
+  for (let i = 0; i < width; i++) {
+    let subLevel = []
+    tiles.push(subLevel);
+    for (let j = 0; j < height; j++) {
+      subLevel.push({
+        state: false
+      });
     }
-  ];
+  }
 
+  //Public Methods
+
+  let changeTile = (coordsObj, state) => {
+    let tile = getTile(coordsObj);
+    if (tile) tile.state = state;
+  }
+
+  let toggleTile = (coordsObj) => {
+    let tile = getTile(coordsObj);
+    if (tile) tile.state = !tile.state;
+  }
+
+  let clearTiles = () => {
+    tiles
+      .reduce((fist, second) => fist.concat(second))
+      .forEach((tile) => {
+        tile.state = false;
+      });
+  }
+
+  let step = () => {
+    let tilesToChange = [];
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        let coordsObj = { x, y };
+        let tile = getTile(coordsObj);
+        let neighbors = getNeighbors(coordsObj);
+        let newValue = null;
+        newValue = checkTile(tile, neighbors);
+        if (newValue != tile.state) {
+          tilesToChange.push({ tile, newValue });
+        }
+      }
+    }
+    tilesToChange.forEach((changeObj) => {
+      let {tile, newValue} = changeObj;
+      if (tile == undefined || newValue == undefined) return;
+      tile.state = newValue;
+    });
+  }
+
+  //Private Methods
   let checkTile = (tile, neighbors) => {
     //Any live cell with fewer than two live neighbours dies, as if caused by under-population.
     //Any live cell with two or three live neighbours lives on to the next generation.
@@ -49,51 +74,6 @@ const Game = function (configObj) {
       else return false;
     }
   };
-
-  for (let i = 0; i < width; i++) {
-    let subLevel = []
-    tiles.push(subLevel);
-    for (let j = 0; j < height; j++) {
-      subLevel.push({
-        state: false
-      });
-    }
-  }
-
-  let changeTile = (coordsObj, state) => {
-    let tile = getTile(coordsObj);
-    if (tile) tile.state = state;
-  }
-
-  let toggleTile = (coordsObj) => {
-    let tile = getTile(coordsObj);
-    if (tile) tile.state = !tile.state;
-  }
-
-  let step = () => {
-    let tilesToChange = [];
-    for (let x = 0; x < width; x++) {
-      for (let y = 0; y < height; y++) {
-        let coordsObj = { x, y };
-        let tile = getTile(coordsObj);
-        let neighbors = getNeighbors(coordsObj);
-        let newValue = null;
-        //liferules.forEach((cb) => {
-        //   newValue = cb(tile, neighbors);
-        //  if (newValue != tile.state);
-        //});
-        newValue = checkTile(tile, neighbors);
-        if (newValue != tile.state) {
-          tilesToChange.push({ tile, newValue });
-        }
-      }
-    }
-    tilesToChange.forEach((changeObj) => {
-      let {tile, newValue} = changeObj;
-      if (tile == undefined || newValue == undefined) return;
-      tile.state = newValue;
-    });
-  }
 
   let getTile = (coordsObj) => {
     let {x,y} = coordsObj;
@@ -151,7 +131,8 @@ const Game = function (configObj) {
     changeTile,
     toggleTile,
     tiles,
-    step
+    step,
+    clearTiles
   }
 }
 

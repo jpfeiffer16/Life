@@ -4,18 +4,27 @@
     <meta charset="UTF-8">
     <title>Game of Life</title>
     <style>
+      html, body {
+        min-height: 100%;
+      }
+      body {
+        background: rgba(239,197,202,1);
+        background: linear-gradient(to bottom, rgba(239,197,202,1) 0%, rgba(210,75,90,1) 61%, rgba(186,39,55,1) 100%);
+        background-repeat: no-repeat;
+      }
       div.row {
         height: 20px;
       }
       div.tile {
         width: 20px;
         height: 100%;
-        background-color: gray;
+        background-color: #d86471;
         display: inline-block;
         border-style: solid;
         border-width: 1px;
-        border-color: white;
+        border-color: #544b4b;
         box-sizing: border-box;
+        box-shadow: inset 1px 1px 9px black;
       }
       div.tile.active {
         background-color: red;
@@ -27,6 +36,7 @@
     <div id="tile-container"></div>
     <button id="step">Step</button>
     <button id="play">Play</button>
+    <button id="clear">Clear</button>
     <script src="gameController.js"></script>
   </body>
 </html>
